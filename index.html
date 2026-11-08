@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>mohin | Video Editor & Motion Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --blue: #0145F2;
+            --blue2: #5b86ff;
+            --bg: #000;
+            --panel: #0c0f17;
+            --white: #fff;
+            --mute: #9aa4bd;
+            --line: #1f2536;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            color-scheme: dark
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px;
+            background: var(--bg)
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: inherit
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--white);
+            font-family: Inter, system-ui, sans-serif;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: .1;
+            mix-blend-mode: screen;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px
+        }
+
+        nav {
+            position: sticky;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 20;
+            background: rgba(0, 0, 0, .86);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line)
+        }
+
+        nav .wrap {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 56px;
+            gap: 12px
+        }
+
+        .logo {
+            font-weight: 900;
+            font-size: 20px;
+            letter-spacing: -.02em
+        }
+
+        .logo b {
+            color: var(--blue2)
+        }
+
+        nav .links {
+            display: flex;
+            gap: 18px;
+            font-size: 14px;
+            color: var(--mute);
+            overflow-x: auto;
+            white-space: nowrap;
+            flex: 1;
+            min-width: 0;
+            justify-content: center;
+            scrollbar-width: none
+        }
+
+        nav .links::-webkit-scrollbar {
+            display: none
+        }
+
+        nav .logo {
+            flex: none
+        }
+
+        nav .navbtn {
+            flex: none;
+            white-space: nowrap;
+            padding: 9px 18px;
+            font-size: 14px;
+            line-height: 1.2
+        }
+
+        @media (max-width:420px) {
+            nav .wrap {
+                gap: 10px
+            }
+
+            nav .logo {
+                font-size: 18px
+            }
+
+            nav .links {
+                gap: 12px;
+                font-size: 13px;
+                justify-content: flex-start
+            }
+
+            nav .navbtn {
+                padding: 8px 13px;
+                font-size: 13px
+            }
+        }
+
+        nav .links a:hover {
+            color: var(--blue2)
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--blue);
+            color: var(--white);
+            font: inherit;
+            font-weight: 700;
+            padding: 13px 24px;
+            border-radius: 999px;
+            border: 0;
+            cursor: pointer
+        }
+
+        .btn:hover {
+            background: #1a5cff
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--white);
+            border: 1.5px solid var(--line)
+        }
+
+        .btn.ghost:hover {
+            border-color: var(--blue);
+            color: var(--blue2);
+            background: transparent
+        }
+
+        .btn.light {
+            background: var(--blue);
+            color: var(--white)
+        }
+
+        .btn.light:hover {
+            background: #1a5cff
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--blue2);
+            outline-offset: 3px
+        }
+
+        .hero {
+            background: radial-gradient(ellipse 80% 70% at 85% 0%, rgba(1, 69, 242, .5), transparent 70%), var(--bg);
+            padding: 72px 0 60px
+        }
+
+        .hero h1 {
+            font-size: clamp(52px, 13vw, 136px);
+            font-weight: 900;
+            letter-spacing: -.045em;
+            line-height: .9;
+            margin: 0 0 24px
+        }
+
+        .hero h1 span {
+            color: var(--blue)
+        }
+
+        .hero p {
+            font-size: clamp(17px, 3vw, 22px);
+            max-width: 680px;
+            margin: 0 0 14px
+        }
+
+        .hero .tags {
+            color: var(--mute);
+            font-size: 15px;
+            margin: 0 0 28px
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap
+        }
+
+        section {
+            padding: 56px 0;
+            border-top: 1px solid var(--line)
+        }
+
+        .head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap
+        }
+
+        h2 {
+            font-size: clamp(30px, 6vw, 52px);
+            font-weight: 900;
+            letter-spacing: -.03em;
+            margin: 0
+        }
+
+        h2::after {
+            content: "";
+            display: block;
+            width: 44px;
+            height: 5px;
+            border-radius: 3px;
+            background: var(--blue);
+            margin-top: 10px
+        }
+
+        .head small {
+            color: var(--mute);
+            font-size: 14px;
+            max-width: 420px
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 18px
+        }
+
+        .card {
+            display: block;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            overflow: hidden;
+            transition: border-color .2s, transform .2s
+        }
+
+        .card:hover {
+            border-color: var(--blue);
+            transform: translateY(-2px)
+        }
+
+        .thumb {
+            aspect-ratio: 16/9;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #0b1f5c, #050a1f)
+        }
+
+        .thumb.v {
+            aspect-ratio: 9/16;
+            max-height: 340px;
+            width: 100%
+        }
+
+        .play {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: var(--blue);
+            display: grid;
+            place-items: center;
+            box-shadow: 0 0 0 8px rgba(1, 69, 242, .25)
+        }
+
+        .play::after {
+            content: "";
+            border-left: 16px solid #fff;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            margin-left: 4px
+        }
+
+        .card .meta {
+            padding: 14px 16px
+        }
+
+        .card .meta b {
+            display: block
+        }
+
+        .card .meta span {
+            color: var(--mute);
+            font-size: 13px
+        }
+
+        .grid {
+            align-items: start
+        }
+
+        .vid {
+            aspect-ratio: 16/9;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, #0b1f5c, #050a1f)
+        }
+
+        .vid.v {
+            aspect-ratio: 9/16
+        }
+
+        .vid iframe,
+        .emb iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            display: block
+        }
+
+        .yt {
+            display: block;
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--mute)
+        }
+
+        .yt:hover {
+            color: var(--blue2)
+        }
+
+        .emb {
+            aspect-ratio: 9/16;
+            width: 100%;
+            background: #0a1030
+        }
+
+        .shot:not([data-src]) {
+            cursor: default
+        }
+
+        a.ph {
+            color: var(--blue2);
+            font-weight: 700
+        }
+
+        .vid {
+            position: relative
+        }
+
+        .vid video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            background: #000
+        }
+
+        .vid.mp {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        .pp {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 0;
+            background: var(--blue);
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 0 8px rgba(1, 69, 242, .25);
+            transition: opacity .25s
+        }
+
+        .pp svg {
+            width: 26px;
+            height: 26px;
+            fill: #fff
+        }
+
+        .pp .i-pause {
+            display: none
+        }
+
+        .vid.playing .pp .i-play {
+            display: none
+        }
+
+        .vid.playing .pp .i-pause {
+            display: block
+        }
+
+        .vid.playing .pp {
+            opacity: 0
+        }
+
+        .vid.playing.show .pp {
+            opacity: 1
+        }
+
+        @media (hover:hover) {
+            .vid.playing:hover .pp {
+                opacity: 1
+            }
+        }
+
+        .vid .err {
+            color: var(--mute);
+            font-size: 14px;
+            padding: 16px;
+            text-align: center
+        }
+
+        .grid.wide {
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr))
+        }
+
+        .grid.tall {
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr))
+        }
+
+        .grid+.grid {
+            margin-top: 18px
+        }
+
+        .vid .th {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .vid.lite {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        .vid.lite .pp {
+            z-index: 1
+        }
+
+        .msg .alt:empty {
+            display: none
+        }
+
+        .tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            width: 100%;
+            height: 100%;
+            color: #fff;
+            font-weight: 700;
+            font-size: 14px
+        }
+
+        .tile:hover .play {
+            background: #1a5cff
+        }
+
+        .reviews {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 16px
+        }
+
+        .shot {
+            margin: 0;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: zoom-in;
+            padding: 0;
+            color: inherit;
+            font: inherit;
+            text-align: left;
+            display: block;
+            width: 100%
+        }
+
+        .shot:hover {
+            border-color: var(--blue)
+        }
+
+        .shot img {
+            display: block;
+            width: 100%;
+            height: auto
+        }
+
+        .shot .ph {
+            aspect-ratio: 9/16;
+            display: grid;
+            place-items: center;
+            text-align: center;
+            color: var(--mute);
+            font-size: 14px;
+            padding: 16px;
+            background: #0a1030
+        }
+
+        .shot figcaption {
+            padding: 10px 14px;
+            font-size: 13px;
+            color: var(--mute)
+        }
+
+        .lb {
+            position: fixed;
+            inset: 0;
+            z-index: 60;
+            background: rgba(0, 0, 0, .94);
+            display: none;
+            place-items: center;
+            padding: 20px;
+            cursor: zoom-out
+        }
+
+        .lb.on {
+            display: grid
+        }
+
+        .lb img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 12px
+        }
+
+        .faq {
+            display: grid;
+            gap: 14px
+        }
+
+        .faq details {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            transition: border-color .2s
+        }
+
+        .faq details[open],
+        .faq details:hover {
+            border-color: var(--blue)
+        }
+
+        .faq summary {
+            list-style: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 20px;
+            font-size: clamp(17px, 2.6vw, 20px);
+            font-weight: 500
+        }
+
+        .faq summary::-webkit-details-marker {
+            display: none
+        }
+
+        .faq .n {
+            color: var(--mute);
+            font-size: 14px;
+            font-weight: 400;
+            flex: none
+        }
+
+        .faq .q {
+            flex: 1
+        }
+
+        .faq .chev {
+            flex: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--blue);
+            display: grid;
+            place-items: center;
+            transition: transform .2s
+        }
+
+        .faq details[open] .chev {
+            transform: rotate(180deg)
+        }
+
+        .faq details[open].closing .chev {
+            transform: rotate(0)
+        }
+
+        .faq .a {
+            padding: 0 20px 22px;
+            color: var(--mute);
+            max-width: 760px
+        }
+
+        .more {
+            margin: 24px 0 0;
+            color: var(--mute)
+        }
+
+        .more a {
+            color: var(--blue2);
+            font-weight: 700
+        }
+
+        footer {
+            background: var(--bg);
+            color: var(--white);
+            padding: 64px 0 40px;
+            border-top: 1px solid var(--line)
+        }
+
+        .lets {
+            text-align: center;
+            margin-bottom: 32px
+        }
+
+        .lets h2 {
+            font-weight: 500;
+            letter-spacing: -.03em
+        }
+
+        .lets h2::after {
+            display: none
+        }
+
+        .lets p {
+            margin: 12px auto 0;
+            max-width: 460px
+        }
+
+        .msg {
+            max-width: 640px;
+            margin: 0 auto
+        }
+
+        .touch {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            max-width: 640px;
+            margin: 16px auto 0;
+            padding: 18px 22px;
+            border: 1px solid var(--blue);
+            background: rgba(1, 69, 242, .14);
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 18px;
+            transition: background .2s
+        }
+
+        .touch:hover {
+            background: var(--blue)
+        }
+
+        .touch small {
+            display: block;
+            font-weight: 400;
+            font-size: 13px;
+            color: var(--mute)
+        }
+
+        .touch:hover small {
+            color: #dbe5ff
+        }
+
+        .touch .arr {
+            flex: none;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--blue);
+            display: grid;
+            place-items: center
+        }
+
+        .touch:hover .arr {
+            background: rgba(255, 255, 255, .2)
+        }
+
+        .circles {
+            justify-content: center;
+            margin-top: 28px
+        }
+
+        footer h2 {
+            margin-bottom: 18px
+        }
+
+        footer p {
+            margin: 0 0 20px;
+            color: var(--mute);
+            max-width: 420px
+        }
+
+        .circles {
+            display: flex;
+            gap: 12px;
+            margin-top: 22px;
+            flex-wrap: wrap
+        }
+
+        .circ {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            display: grid;
+            place-items: center;
+            transition: .2s
+        }
+
+        .circ:hover {
+            background: var(--blue);
+            border-color: var(--blue)
+        }
+
+        .circ svg {
+            width: 24px;
+            height: 24px
+        }
+
+        .msg {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 22px;
+            display: grid;
+            gap: 12px
+        }
+
+        .msg label {
+            font-size: 13px;
+            color: var(--mute);
+            font-weight: 500
+        }
+
+        .msg input,
+        .msg textarea {
+            width: 100%;
+            font: inherit;
+            color: var(--white);
+            background: var(--bg);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 12px 14px
+        }
+
+        .msg input:focus,
+        .msg textarea:focus {
+            border-color: var(--blue);
+            outline: 0
+        }
+
+        .msg textarea {
+            min-height: 130px;
+            resize: vertical
+        }
+
+        .msg .alt {
+            font-size: 13px;
+            color: var(--mute);
+            text-align: center
+        }
+
+        .msg .alt a {
+            color: var(--blue2);
+            font-weight: 700;
+            cursor: pointer
+        }
+
+        .copy {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--line);
+            font-size: 14px;
+            color: var(--mute)
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important;
+                scroll-behavior: auto !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="wrap"><a class="logo" href="#top">mohin</a>
+            <div class="links"><a href="#work">My work</a><a href="#reviews">Reviews</a><a href="#faq">FAQ</a></div>
+            <a class="btn navbtn" href="#contact">Hire me</a>
+        </div>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="wrap">
+            <h1>Videos that<br><span>hold attention.</span></h1>
+            <p>Hey, this is mohin, a 22-year-old video editor and motion designer. I edit short-form, YouTube and ad
+                videos, and handle the motion graphics and pacing so your content keeps viewers watching.</p>
+            <p class="tags">Short-form · YouTube · Motion graphics · Talking head · SaaS and ads</p>
+            <div class="row"><a class="btn light" href="#contact">Work with me</a><a class="btn ghost" href="#saas">See
+                    my work</a></div>
+        </div>
+    </header>
+
+    <main id="work"></main>
+
+    <!-- <section id="reviews">
+        <div class="wrap">
+            <div class="head">
+                <h2>Client reviews</h2>
+            </div>
+            <div class="reviews" id="revs"></div>
+        </div>
+    </section> -->
+
+    <section id="faq">
+        <div class="wrap">
+            <div class="head">
+                <h2>Questions you may ask</h2>
+            </div>
+            <div class="faq" id="faqList"></div>
+            <p class="more">Still got a question? <a href="#contact">Message me here</a> and I will get back to you.</p>
+        </div>
+    </section>
+
+    <footer id="contact">
+        <div class="wrap">
+            <div class="lets">
+                <h2>Let's Build Yours</h2>
+                <p>Tell me a few things about your project and I will get back to you.</p>
+            </div>
+            <div class="msg">
+                <div><label for="mName">Your name</label><input id="mName" autocomplete="name"></div>
+                <div><label for="mEmail">Your email</label><input id="mEmail" type="email" autocomplete="email"
+                        inputmode="email"></div>
+                <div><label for="mText">Tell me about your project</label><textarea id="mText"></textarea></div>
+                <button class="btn" id="mSend" type="button">Send message</button>
+                <div class="alt" id="mStatus" role="status"></div>
+            </div>
+            <a class="touch" id="waBtn" target="_blank" rel="noopener"><span>Get in touch<small>Message me on
+                        WhatsApp</small></span><span class="arr"><svg width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 17 17 7M8 7h9v9" />
+                    </svg></span></a>
+            <div class="circles" id="circles"></div>
+            <div class="copy">© mohin. Video editor and motion designer.</div>
+        </div>
+    </footer>
+
+    <script>
+        /* ===== EDIT HERE ===== */
+        const CONTACT = {
+            whatsapp: "8801613736227",            // country code + number, no + or spaces
+            email: "info.mohindn@email.com",       // messages from the form are sent to this email
+            facebook: "mohinhq",
+            instagram: "mohinhq",
+            linkedin: "mohinhq",   // username or full link
+            youtube: "@mohinhq"    // handle or full link
+        };
+        // One {url:"..."} per video. YouTube links (watch, youtu.be, shorts) play inside the card.
+        // Long videos and Shorts can be mixed: they are sorted into separate, equal-sized rows automatically.
+        // Or use src for your own video file: {src:"videos/name.mp4"}
+        const SECTIONS = [
+            {
+                id: "saas", title: "SaaS", note: "Product demos and explainers for software.", items: [
+                    {url: "https://youtube.com/shorts/Zwk-wDdEu6U"}, {url: "https://youtube.com/shorts/w207-uGFvVU"}]
+            },
+            {
+                id: "motion", title: "Motion Graphics / 3D", note: "Logo animation, typography, 3D reels.", items: [
+                    {url: "https://youtube.com/shorts/57jIrp3GiY0"}, {url: "https://youtube.com/shorts/yrbHxyE1rkA?si=OO6op9QHlpTxPdV0"}, {url: "https://youtube.com/shorts/yrbHxyE1rkA"}]
+            },
+            {
+                id: "talking", title: "Talking Head", note: "Pacing, captions and cutaways for speaker-led videos.", items: [
+                    {url: "https://youtu.be/aT9x4mcPTvo"}, {url: "https://youtube.com/shorts/3RYJm5UPFzE"}, {url: "https://youtube.com/shorts/xeLhazEG7TA"}]
+            },
+            {
+                id: "doc", title: "Documentary", note: "Research-led storytelling with voiceover.", items: [
+                    {url: "https://youtu.be/C5du8uniDlw"}]
+            },
+            // {
+            //     id: "ads", title: "Ads", note: "Short video ads for brands and products.", items: [
+            //         {url: ""}, {url: ""}, {url: ""}]
+            // }
+        ];
+        // Share a link: Instagram post/reel, Facebook post/video, YouTube video, or a direct image URL.
+        // img:"" is used for screenshots that Claude embeds in the page.
+        // const REVIEWS = [
+        //     {url: ""}, {url: ""}, {url: ""}
+        // ];
+        const FAQS = [
+            {q: "How fast can you deliver?", a: "It depends on the length and complexity of the video. A short reel takes less time than a long YouTube video or a motion graphics piece. Once I know your project details, I will share a timeline before we start."},
+            {q: "What services do you provide?", a: "Short-form editing (Reels, Shorts, TikTok), YouTube editing, motion graphics and 3D, talking head videos, SaaS videos, documentaries and ads. I can also help with research, scripting and voiceover."},
+            {q: "What do I need to send you?", a: "Your raw footage, a short brief about the video, and any references or brand assets you have (logo, fonts, colors). If you do not have a brief yet, tell me your goal and I will help shape it."},
+            {q: "How does your workflow look?", a: "You share the brief and footage, we agree on the plan and timeline, I send a first draft, you give feedback, and I finish the final version for export."},
+            {q: "How many revisions do I get?", a: "The number of revision rounds is agreed before the project starts, so we both know what to expect. I will keep refining until the video matches the brief we agreed on."},
+            // {q: "Do you work with small creators and new brands?", a: "Yes. I work with individual creators, startups and established brands. Tell me about your project and we can see if it is a good fit."},
+            // {q: "How do I get started?", a: "Message me on WhatsApp, send a message through the box below, or DM me on Facebook or Instagram with a few details about your project."}
+        ];
+        /* ===================== */
+        const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+        const safe = u => /^https:\/\//.test(u) ? u : "";
+        document.getElementById("faqList").innerHTML = FAQS.map((f, i) => `<details><summary><span class="n">[ ${String(i + 1).padStart(2, "0")} ]</span><span class="q">${esc(f.q)}</span><span class="chev"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span></summary><div class="a">${esc(f.a)}</div></details>`).join("");
+        const reduce = matchMedia("(prefers-reduced-motion:reduce)");
+        document.querySelectorAll("#faqList details").forEach(d => {
+            const s = d.querySelector("summary"); let an = null;
+            s.addEventListener("click", e => {
+                e.preventDefault();
+                if (reduce.matches) {d.open = !d.open; return }
+                const from = d.offsetHeight, b = from - d.clientHeight;
+                const opening = !d.open || d.classList.contains("closing");
+                if (an) an.cancel();
+                d.style.overflow = "hidden";
+                let to;
+                if (opening) {d.classList.remove("closing"); d.open = true; to = d.offsetHeight}
+                else {d.classList.add("closing"); to = s.offsetHeight + b}
+                an = d.animate({height: [from + "px", to + "px"]}, {duration: 320, easing: "cubic-bezier(.4,0,.2,1)"});
+                an.onfinish = () => {d.open = opening; d.classList.remove("closing"); d.style.overflow = ""; an = null};
+            });
+        });
+        // Some hosts block embedded players (CSP). When that happens, swap each player for a link tile.
+        const swap = () => {
+            document.querySelectorAll(".vid[data-u]").forEach(el => {
+                if (!el.querySelector("iframe")) return;
+                el.innerHTML = `<a class="tile" href="${esc(el.dataset.u)}" target="_blank" rel="noopener"><span class="play"></span><span>Watch video</span></a>`;
+                el.classList.remove("lite")
+            });
+            document.querySelectorAll(".emb[data-u]").forEach(el => {
+                if (!el.querySelector("iframe")) return;
+                el.outerHTML = `<a class="ph" href="${esc(el.dataset.u)}" target="_blank" rel="noopener">Open review ↗</a>`
+            });
+        };
+        document.addEventListener("securitypolicyviolation", e => {if (/frame|child|default/.test(e.violatedDirective)) setTimeout(swap, 0)});
+        const PL = '<svg class="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg><svg class="i-pause" viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+        const mp = i => `<div class="card"><div class="vid mp ${i.vertical ? "v" : ""}"><video src="${esc(i.src)}#t=0.1" playsinline preload="metadata"></video><button class="pp" type="button" aria-label="Play or pause video">${PL}</button></div></div>`;
+        const ytId = u => {const m = String(u).match(/(?:youtu\.be\/|youtube\.com\/(?:shorts\/|embed\/|live\/|watch\?(?:[^#]*&)?v=))([\w-]{11})/); return m ? m[1] : ""};
+        const frame = (src, t) => `<iframe src="${esc(src)}" title="${t}" loading="lazy" allow="accelerometer; autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+        const isTall=()=>false;
+        const card = i => {
+            if (i.src && !/^\s*(javascript|data):/i.test(i.src)) return mp(i);
+            const u = safe(i.url), id = ytId(u), v = isTall(i);
+            const inner = id ? `<img class="th" src="https://i.ytimg.com/vi/${id}/maxresdefault.jpg" alt="" loading="lazy"><button class="pp" type="button" aria-label="Play video">${PL}</button>`
+                : u ? `<a class="tile" href="${esc(u)}" target="_blank" rel="noopener"><span class="play"></span><span>Watch video</span></a>` : `<div class="play"></div>`;
+            return `<div class="card"><div class="vid ${v ? "v" : ""}${id ? " lite" : ""}" data-u="${esc(u)}"${id ? ` data-id="${id}"` : ""}>${inner}</div></div>`
+        };
+        document.getElementById("work").innerHTML = SECTIONS.map(s => {
+            const wide = s.items.filter(i => !isTall(i)), tall = s.items.filter(isTall);
+            return `
+<section id="${s.id}"><div class="wrap"><div class="head"><h2>${esc(s.title)}</h2><small>${esc(s.note)}</small></div>
+${wide.length ? `<div class="grid wide">${wide.map(card).join("")}</div>` : ""}${tall.length ? `<div class="grid tall">${tall.map(card).join("")}</div>` : ""}</div></section>`
+        }).join("");
+        document.querySelectorAll(".vid.mp").forEach(box => {
+            const v = box.querySelector("video"); let t;
+            const flash = () => {box.classList.add("show"); clearTimeout(t); t = setTimeout(() => box.classList.remove("show"), 1400)};
+            v.addEventListener("play", () => {box.classList.add("playing"); flash()});
+            v.addEventListener("pause", () => box.classList.remove("playing"));
+            v.addEventListener("ended", () => box.classList.remove("playing"));
+            v.addEventListener("error", () => {box.classList.remove("mp"); box.innerHTML = '<div class="err">Video could not be loaded</div>'});
+            box.addEventListener("click", () => {
+                if (v.paused) {document.querySelectorAll(".vid.mp video").forEach(o => {if (o !== v) o.pause()}); v.play().catch(() => { })} else v.pause();
+                flash()
+            });
+        });
+
+        document.querySelectorAll(".vid.lite").forEach(box => {
+            const im = box.querySelector("img");
+            im.addEventListener("error", () => {if (!im.dataset.t) {im.dataset.t = 1; im.src = "https://i.ytimg.com/vi/" + box.dataset.id + "/hqdefault.jpg"} else im.remove()});
+            box.addEventListener("click", () => {
+                if (box.querySelector("iframe")) return;
+                box.classList.remove("lite");
+                box.innerHTML = frame("https://www.youtube-nocookie.com/embed/" + box.dataset.id + "?autoplay=1&playsinline=1&rel=0&modestbranding=1", "Video")
+            });
+        });
+        const revHTML = r => {
+            const u = safe(r.url || ""), enc = encodeURIComponent(u);
+            if (r.img) return `<figure class="shot" tabindex="0" role="button" data-src="${esc(r.img)}"><img src="${esc(r.img)}" alt="Client review" loading="lazy"></figure>`;
+            if (!u) return `<figure class="shot"><div class="ph">Review goes here</div></figure>`;
+            const ig = u.match(/instagram\.com\/(p|reel|reels|tv)\/([\w-]+)/);
+            if (ig) return `<figure class="shot"><div class="emb" data-u="${esc(u)}">${frame("https://www.instagram.com/" + (ig[1] === "reels" ? "reel" : ig[1]) + "/" + ig[2] + "/embed", "Instagram review")}</div></figure>`;
+            if (/facebook\.com|fb\.watch/.test(u)) {
+                const vid = /\/videos?\/|\/reel|fb\.watch|\/watch/.test(u);
+                return `<figure class="shot"><div class="emb" data-u="${esc(u)}">${frame("https://www.facebook.com/plugins/" + (vid ? "video" : "post") + ".php?href=" + enc + "&show_text=false&width=500", "Facebook review")}</div></figure>`
+            }
+            const y = ytId(u);
+            if (y) return `<figure class="shot"><div class="emb" data-u="${esc(u)}">${frame("https://www.youtube-nocookie.com/embed/" + y + "?rel=0&playsinline=1", "YouTube review")}</div></figure>`;
+            if (/youtube\.com|youtu\.be/.test(u)) return `<figure class="shot"><a class="ph" href="${esc(u)}" target="_blank" rel="noopener">Open review ↗</a></figure>`;
+            return `<figure class="shot" tabindex="0" role="button" data-src="${esc(u)}"><img src="${esc(u)}" alt="Client review" loading="lazy"></figure>`
+        };
+        document.getElementById("revs").innerHTML = REVIEWS.map(revHTML).join("");
+        document.querySelectorAll("#revs img").forEach(im => im.addEventListener("error", () => {const f = im.closest("figure"), a = document.createElement("a"); a.className = "ph"; a.href = im.src; a.target = "_blank"; a.rel = "noopener"; a.textContent = "Open review ↗"; f.removeAttribute("data-src"); f.removeAttribute("role"); f.replaceChildren(a)}));
+        const lb = document.createElement("div"); lb.className = "lb"; lb.innerHTML = "<img alt=''>"; document.body.appendChild(lb);
+        const openLb = e => {const f = e.target.closest("[data-src]"); if (!f) return; lb.firstChild.src = f.dataset.src; lb.classList.add("on")};
+        document.getElementById("revs").addEventListener("click", openLb);
+        document.getElementById("revs").addEventListener("keydown", e => {if (e.key === "Enter") openLb(e)});
+        lb.addEventListener("click", () => lb.classList.remove("on"));
+        document.addEventListener("keydown", e => {if (e.key === "Escape") lb.classList.remove("on")});
+
+        const C = CONTACT, num = C.whatsapp.replace(/\D/g, ""), wa = "https://wa.me/" + num;
+        document.getElementById("waBtn").href = wa;
+        const I = {
+            fb: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3a4 4 0 0 0-4 4v3H7v4h3v6h4v-6h3l1-4h-4V8z"/></svg>',
+            ig: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>',
+            li: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M5 9h3v10H5zM6.5 4.5a1.75 1.75 0 1 1 0 3.5 1.75 1.75 0 0 1 0-3.5zM11 9h2.9v1.4h.05c.4-.8 1.4-1.6 2.9-1.6 3.1 0 3.7 2 3.7 4.7V19h-3v-4.7c0-1.1 0-2.6-1.6-2.6s-1.8 1.2-1.8 2.5V19H11z"/></svg>',
+            yt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg>'
+        };
+        const url = (v, base) => /^https?:/i.test(v) ? v : base + v.replace(/^@/, "");
+        document.getElementById("circles").innerHTML = [
+            ["https://m.me/" + C.facebook, "Facebook DM", I.fb], ["https://ig.me/m/" + C.instagram, "Instagram DM", I.ig],
+            [url(C.linkedin, "https://www.linkedin.com/in/"), "LinkedIn", I.li], [url(C.youtube, "https://www.youtube.com/@"), "YouTube", I.yt]
+        ].map(c => `<a class="circ" href="${esc(c[0])}" target="_blank" rel="noopener" aria-label="${c[1]}" title="${c[1]}">${c[2]}</a>`).join("");
+
+        // Contact form: sends the message to your email through FormSubmit (no backend needed).
+        const st = document.getElementById("mStatus"), sendBtn = document.getElementById("mSend");
+        const say = (t, ok) => {st.textContent = t; st.style.color = ok === false ? "#ff8a8a" : ok ? "#7dffb0" : ""};
+        sendBtn.addEventListener("click", async () => {
+            const val = id => document.getElementById(id).value.trim();
+            const name = val("mName"), email = val("mEmail"), message = val("mText");
+            if (!name || !/^\S+@\S+\.\S+$/.test(email) || !message) {say("Please add your name, a valid email and your message.", false); return }
+            sendBtn.disabled = true; say("Sending...");
+            try {
+                const r = await fetch("https://formsubmit.co/ajax/" + encodeURIComponent(C.email), {
+                    method: "POST", headers: {"Content-Type": "application/json", Accept: "application/json"},
+                    body: JSON.stringify({name, email, message, _subject: "New project enquiry from your portfolio", _template: "table", _captcha: "false"})
+                });
+                const d = await r.json();
+                if (!r.ok || String(d.success) !== "true") throw new Error("send failed");
+                say("Message sent. I will reply to your email soon.", true);
+                ["mName", "mEmail", "mText"].forEach(id => document.getElementById(id).value = "");
+            } catch (e) {
+                say("Could not send directly. Opening your email app instead.", false);
+                location.href = "mailto:" + C.email + "?subject=" + encodeURIComponent("Project enquiry") + "&body=" + encodeURIComponent(message + "\n\n" + name + " (" + email + ")");
+            }
+            sendBtn.disabled = false
+        });
+    </script>
+</body>
+
+</html>
